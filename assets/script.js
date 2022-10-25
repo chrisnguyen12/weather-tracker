@@ -1,28 +1,3 @@
-// ** START PSEUDO CODE (subject to change) ** //
-
-// when user searches for a city (clicks search button):
-//  - store the user input in a variable
-//  - use a fetch api to get the current & future conditions for that city
-//  - store that city into local storage
-// use the data from fetch to populate in the current-weather container:
-//  - name and today's date as M/DD/YYY
-//  - temp
-//  - wind
-//  - humidity
-//  - UV index (color coded for favorable(green), moderate(yellow), or severe(red))
-// use the data from fetch to populate in the five-day container:
-//  - date
-//  - an icon reprsentation of weather conditions
-//  - the temp
-//  - wind speed
-//  - humidity
-// use data in local.storage to create a button under the <hr> in search area for city history
-//  - when you click the button it displays the current and future conditions for that city
-
-// ** END PSEUDO CODE ** //
-
-// START GLOBAL VARIABLES //
-
 var openWeatherApiKey = '26ba3a7e283acb9cd1e8665c6c3b319a';
 var openWeatherCoordinatesUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat='
@@ -78,7 +53,7 @@ function searchHistory(city) {
     var searchHistoryBtn = $('<button>')
         .addClass('btn')
         .text(city)
-        .on('click', function () {
+        .on('click', function() {
             $('#current-weather').remove();
             $('#five-day').empty();
             $('#five-day-header').remove();
@@ -98,18 +73,18 @@ function getWeather(city) {
     var apiCoordinatesUrl = openWeatherCoordinatesUrl + city + '&appid=' + openWeatherApiKey;
     // fetch the coordinates for parameter city
     fetch(apiCoordinatesUrl)
-        .then(function (coordinateResponse) {
+        .then(function(coordinateResponse) {
             if (coordinateResponse.ok) {
-                coordinateResponse.json().then(function (data) {
+                coordinateResponse.json().then(function(data) {
                     var cityLatitude = data.coord.lat;
                     var cityLongitude = data.coord.lon;
                     // fetch weather information
                     var apiOneCallUrl = oneCallUrl + cityLatitude + '&lon=' + cityLongitude + '&appid=' + openWeatherApiKey + '&units=imperial';
 
                     fetch(apiOneCallUrl)
-                        .then(function (weatherResponse) {
+                        .then(function(weatherResponse) {
                             if (weatherResponse.ok) {
-                                weatherResponse.json().then(function (weatherData) {
+                                weatherResponse.json().then(function(weatherData) {
 
                                     // ** START CURRENT DAY DISPLAY ** //
 
@@ -133,7 +108,7 @@ function getWeather(city) {
                                             src: cityCurrentWeatherIcon,
                                             alt: 'Weather Icon'
                                         })
-                                    //create list of current weather details
+                                        //create list of current weather details
                                     var currWeatherListEl = $('<ul>')
 
                                     var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + ' MPH', 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
@@ -166,7 +141,7 @@ function getWeather(city) {
                                         } else {
                                             var currWeatherListItem = $('<li>')
                                                 .text(currWeatherDetails[i])
-                                            //append to ul
+                                                //append to ul
                                             currWeatherListEl.append(currWeatherListItem);
                                         }
 
@@ -231,15 +206,15 @@ function getWeather(city) {
 
                                         // create card text displaying weather details
                                         var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + ' MPH', 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
-                                        //create temp
+                                            //create temp
                                         var tempEL = $('<p>')
                                             .addClass('card-text')
                                             .text('Temp: ' + weatherData.daily[i].temp.max)
-                                        //create wind
+                                            //create wind
                                         var windEL = $('<p>')
                                             .addClass('card-text')
                                             .text('Wind: ' + weatherData.daily[i].wind_speed + ' MPH')
-                                        // create humidity
+                                            // create humidity
                                         var humidityEL = $('<p>')
                                             .addClass('card-text')
                                             .text('Humidity: ' + weatherData.daily[i].humidity + '%')
@@ -272,7 +247,7 @@ function getWeather(city) {
             }
         })
         // if fetch fails
-        .catch(function (error) {
+        .catch(function(error) {
             alert('Unable to connect to Open Weather');
         });
 }
@@ -296,7 +271,7 @@ function submitCitySearch(event) {
         saveSearchHistory();
         //empty the form text area
         cityInputEl.val('');
-        
+
         //if user doesn't type in a city
     } else {
         alert('Please enter a city');
@@ -307,7 +282,7 @@ function submitCitySearch(event) {
 userFormEL.on('submit', submitCitySearch);
 
 // on click of search button - empty the current weather and 5-day forecast info
-$('#search-btn').on('click', function () {
+$('#search-btn').on('click', function() {
     $('#current-weather').remove();
     $('#five-day').empty();
     $('#five-day-header').remove();
